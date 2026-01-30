@@ -8,11 +8,15 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $grettings = "Hola fucking, ";
+        return view('home');
+    }
 
-        return view('home', [
-            'grettings' => $grettings,
-            'name' => request('name')
+    public function form(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
         ]);
+
+        return redirect('/')->with('success', 'Tu solicitud ha sido recibida');
     }
 }
