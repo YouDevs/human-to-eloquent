@@ -4,8 +4,21 @@
             De Humano a <span class="text-primary">Eloquent</span>
         </h1>
         <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] gap-8 items-start">
-            <div class="bg-white dark:bg-[#1a2632] rounded-xl shadow-2xl border border-gray-200 dark:border-[#233648] overflow-hidden">
-                <form class="p-8 space-y-8" method="post" action="#">
+            <div class="bg-white text-white dark:bg-[#1a2632] rounded-xl shadow-2xl border border-gray-200 dark:border-[#233648] overflow-hidden">
+                <h1>Categorías</h1>
+
+                {{-- @php
+                    dd($categories->count())
+                @endphp --}}
+                @if( $categories->count() )
+                <ul>
+                    @foreach ($categories as $category)
+                        <li>{{ $category->name }}</li>
+                    @endforeach
+                </ul>
+                @endif
+
+                {{-- <form class="p-8 space-y-8" method="post" action="#">
                     <input
                         type="text"
                         class="w-full rounded-xl border dark:border-[#324d67] dark:bg-[#0f1720] text-gray-800 dark:text-gray-100 text-sm p-4 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
@@ -27,7 +40,7 @@
                         <span class="material-symbols-outlined mr-2">auto_awesome</span>
                         Generar consulta
                     </button>
-                </form>
+                </form> --}}
             </div>
         </div>
     </section>
