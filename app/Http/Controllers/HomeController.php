@@ -2,31 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use Prism\Prism\Facades\Prism;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Models\Category;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        // $categories = DB::table('categories')->get();
-        $categories = Category::where('is_active', 1)->get();
-
-        Category::create(); // C
-        Category::all(); // R
-        Category::update(); // U
-        Category::delete(); // D
-
-        return view('home', ['categories' => $categories]);
+        return view('home');
     }
 
-    public function form(Request $request)
+    public function postPrompt(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
+        $validated = $request->validate([
+            'prompt' => 'required',
         ]);
 
-        return redirect('/')->with('success', 'Tu solicitud ha sido recibida');
+        $prompt = $validated['prompt'];
+
+        // Pasamos prompt a la I.A.
+        $response = Prism::text()
+                ->using('groq', 'llama-3.3-70b-versatile')
+                ->withPrompt($prompt)
+                ->asText();
+
+        // dd($response->text);
+
+        return view('home', ['response' => $response->text]);
     }
 }
