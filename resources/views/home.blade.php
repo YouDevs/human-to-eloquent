@@ -83,6 +83,7 @@
 
             {{-- Col. Derecha: Resultado --}}
             <div class="space-y-6">
+                {{-- Mostrar Código --}}
                 <div class="bg-[#131b24] rounded-xl border border-[#1f2a36] shadow-lg overflow-hidden flex flex-col">
                     <div class="p-6 border-b border-[#1f2a36] flex items-center justify-between bg-[#131b24]">
                         <div class="flex items-center gap-2">
@@ -92,7 +93,23 @@
                     </div>
                     <div class="p-6 bg-[#0f161e] flex-1 min-h-[300px] relative">
                         <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-3xl pointer-events-none"></div>
-                        <pre class="code-block text-sm leading-relaxed overflow-x-auto text-white">{{ $response ?? '' }}</pre>
+                        <pre class="code-block text-sm leading-relaxed overflow-x-auto text-white">{{ $code ?? '' }}</pre>
+                    </div>
+                </div>
+
+                {{-- Mostrar respuesta --}}
+                <div class="bg-[#131b24] rounded-xl border border-[#1f2a36] shadow-lg overflow-hidden">
+                    <div class="p-6 border-b border-[#1f2a36]">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary">notes</span>
+                            <h3 class="font-bold text-lg text-white">Explicación</h3>
+                        </div>
+                    </div>
+
+                    <div class="p-6">
+                        <p class="m-0 text-sm text-[#92adc9] leading-relaxed">
+                            {{ $explanation ?? 'Aqui aparecera la explicacion.' }}
+                        </p>
                     </div>
                 </div>
             </div>
