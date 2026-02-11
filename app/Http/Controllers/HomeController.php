@@ -15,10 +15,14 @@ class HomeController extends Controller
     public function postPrompt(Request $request)
     {
         $validated = $request->validate([
-            'prompt' => 'required',
+            'prompt'        => 'required',
+            'migrations'   => 'nullable|string',
         ]);
 
+        // buildPrompt();
+
         $userPrompt = trim($validated['prompt']);
+        $migrations = trim($validated['migrations']);
 
         //0. Full Prompt
         $fullPrompt = <<<PROMPT
@@ -37,6 +41,10 @@ class HomeController extends Controller
 
         $fullPrompt .= "\n".$userPrompt;
 
+        if ($migrations !== "") {
+            $fullPrompt .= "\n\nMIGRATIONS:\n $migrations";
+        }
+
         //1. Pasamos prompt a la I.A.
         $response = Prism::text()
                 ->using('groq', 'llama-3.3-70b-versatile')
@@ -46,26 +54,25 @@ class HomeController extends Controller
         $aiResponse = $response->text;
 
         //2. Parsear la respuesta
-
         preg_match('/###\\s*Codigo\\s*(.*?)\\s*###\\s*Explicacion\\s*(.*)/is', $aiResponse, $matches);
-        // $matches[0]  Todos el texto que coincidió con el patrón completo.
-        // $matches[1]  Solo lo que estaba dentro de los primeros () (código)
-        // $matches[2]  Solo que estaba dentro del segundo () (la explicación)
-
 
         if( count($matches) === 3 ) {
-            $code = trim($matches[1]); // código
-            $explanation = trim($matches[2]); // explicación
+            $code = trim($matches[1]);
+            $explanation = trim($matches[2]);
+        } else {
+            $code = $aiResponse;
         }
 
-        // Eliminar el markdown del código.
+        //3. Eliminar el markdown del código.
         $code = preg_replace('/^```[a-z0-9_-]*\\s*/i', '', $code);
         $code = preg_replace('/\\s*```$/', '', $code);
         $code = trim($code);
 
         return view('home', [
-            'code' => $code,
-            'explanation' => $explanation
+            'userPrompt'    => $userPrompt,
+            'migrations'    => $migrations,
+            'code'          => $code,
+            'explanation'   => $explanation
         ]);
     }
 }

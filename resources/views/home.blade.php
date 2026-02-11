@@ -43,7 +43,7 @@
                             id="prompt"
                             name="prompt"
                             placeholder="Ejemplo: Dame los usuarios con mas de 3 posts en los ultimos 30 dias, ordenados por cantidad de posts y limitados a 10 resultados."
-                        ></textarea>
+                        >{{ old('prompt', $userPrompt ?? '') }}</textarea>
                     </div>
 
                     <div class="rounded-xl border border-dashed border-gray-200 dark:border-[#324d67] bg-gray-50/60 dark:bg-[#111a22]/50 p-6">
@@ -66,7 +66,7 @@
                             name="migrations"
                             placeholder="Schema::create('users', function (Blueprint $table) {...});"
                             value=""
-                        ></textarea>
+                        >{{ old('migrations', $migrations ?? '') }}</textarea>
                     </div>
 
                     <div class="flex justify-center">
